@@ -1,20 +1,47 @@
-drop procedure if exists AddValidBooking;
+Drop procedure if exists AddBooking;
+
 Delimiter //
-Create procedure AddvalidBooking(in bDate Date, in tNumber int, in cID int)
-Begin 
+create procedure AddBooking(in bID int,in bDate Date ,in tNum int,in cID int) 
+Begin
 declare message varchar(100);
-declare checker int;
-/*check to see if the date and table number exist already*/
-select count(*) into checker from bookings where Date = bDate and TableNumber=tNumber;
+insert into bookings values (bID,bDate,tNum,cID);
 
-if checker>0 then set message = concat("Cannot book table ",tNumber," on ",bDate," - Booking cancelled");
-else 
-start transaction;
-insert into bookings (BookingID,Date,TableNumber,CustomerID) values(Null,bDate,tNumber,cID); commit;
-set message = concat("Table number ",tNumber," has been booked for customer ",cID," on ",bDate); end if;
+set message = "New Booking Added";
 
-select message as "Booking Status"
-
-;End //
+select message as "Confrmation";
+End //
 Delimiter ;
-call AddValidBooking("2022-10-13",3,4)
+call AddBooking(9,"2022-12-30",3,4)
+
+Delimiter //
+create procedure UpdateBooking(in bID int,in bDate Date)
+Begin
+declare message varchar(100);
+update bookings set Date = bDate where BookingID = bID;
+
+set message = concat("Booking ",bID," updated");
+
+select message as "Confrmation";
+End //
+Delimiter ;
+call UpdateBooking(9,"2023-01-30");
+
+
+Delimiter //
+create procedure CancelBooking(in bID int) 
+Begin
+declare message varchar(100);
+Delete from bookings where BookingID = bID;
+
+set message = concat("Booking ", bID," Cancelled");
+
+select message as "Confrmation";
+End //
+Delimiter ;
+call CancelBooking(9)
+
+
+
+
+
+
