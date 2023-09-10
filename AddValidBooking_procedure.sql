@@ -1,6 +1,5 @@
-drop procedure if exists AddValidBooking;
-Delimiter //
-Create procedure AddvalidBooking(in bDate Date, in tNumber int, in cID int)
+DELIMITER $$
+CREATE PROCEDURE `AddvalidBooking`(in bDate Date, in tNumber int, in cID int)
 Begin 
 declare message varchar(100);
 declare checker int;
@@ -14,7 +13,5 @@ insert into bookings (BookingID,Date,TableNumber,CustomerID) values(Null,bDate,t
 set message = concat("Table number ",tNumber," has been booked for customer ",cID," on ",bDate); end if;
 
 select message as "Booking Status"
-
-;End //
-Delimiter ;
-call AddValidBooking("2022-10-13",3,4)
+;End$$
+DELIMITER ;
